@@ -30,19 +30,19 @@ pageLoader();
         for (let index = 0; index < questionText.length; index += 1) {
           questionText[index].innerHTML = currentQuestion.options[index];
           radioBtns[index].setAttribute('value', questionText[index].innerHTML);
-        }
-        radioBtns.forEach((radioBtn) => {
-          if (radioBtn.checked === true) {
-            console.log(true);
-            quiz.userAnswer(radioBtn.getAttribute('value'), radioBtn.parentNode);
-          }
-        });
+        };
       } else {
         console.log(`kraj ${quiz.score}`);
       }
     }
     if (e.target.classList.contains('js-confirmBtn')) {
       nextBtn.classList.add('active');
+      radioBtns.forEach((radioBtn) => {
+        if (radioBtn.checked === true) {
+          console.log(true);
+          quiz.userAnswer(radioBtn.getAttribute('value'), radioBtn.parentNode);
+        }
+      });
     }
 
     if (targetBlock === nextBtn) {
