@@ -7,9 +7,64 @@
     <title>QuizJs</title>
 </head>
 <body>
+
+    <div class="js-loader loader">
+        <img src="./images/loader.gif" alt="Loading...">
+    </div>
+
     <div class="container">
         <div class="row text-center">
-            <h1 class="py-4">Welcome to my Quiz</h1>
+            <h1 class="py-5">Welcome to my Quiz</h1>
+        </div>
+    </div>
+
+    <div class="container oneAnswerQuestions js-oneAnswerQuestions mt-5">
+        <div class="row">
+            <div class="col-9">
+                <h3 class="question js-question">What is the answer</h3>
+            </div>
+            <div class="col-3">
+                <h3 class="category js-category">What is the category</h3>
+            </div>
+            <div class="col-12 mb-3 pt-3 d-flex fs-5 rounded questionContainer js-questionContainer">
+                <p class="questionPrefix js-questionPrefix pe-2">A.</p>
+                <input class="form-check-input bg-dark me-3 js-radioBtn" type="radio" name="choice" id="choice1">
+                <label for="choice1" class="questionText js-questionText">Question</label>
+            </div>
+            <div class="col-12 my-3 pt-3 d-flex fs-5 rounded questionContainer js-questionContainer">
+                <p class="questionPrefix js-questionPrefix pe-2">B.</p>
+                <input class="form-check-input bg-dark me-3 js-radioBtn" type="radio" name="choice" id="choice2">
+                <label for="choice1" class="questionText js-questionText">Question</label>
+            </div>
+            <div class="col-12 my-3 pt-3 d-flex fs-5 rounded questionContainer js-questionContainer">
+                <p class="questionPrefix js-questionPrefix pe-2">C.</p>
+                <input class="form-check-input bg-dark me-3 js-radioBtn" type="radio" name="choice" id="choice3">
+                <label for="choice1" class="questionText js-questionText">Question</label>
+            </div>
+            <div class="col-12 mt-3 pt-3 d-flex fs-5 rounded questionContainer js-questionContainer">
+                <p class="questionPrefix js-questionPrefix pe-2">D.</p>
+                <input class="form-check-input bg-dark me-3 js-radioBtn" type="radio" name="choice" id="choice4">
+                <label for="choice1" class="questionText js-questionText">Question</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-3 confirmBtnHolder js-confirmBtnHolder">
+        <div class="row">
+            <div class="col-6">
+                <button class="fw-bold rounded btn btn-primary fs-5 px-5 py-3 mx-5 js-confirmBtn">Confirm</button>
+            </div>
+            <div class="col-6">
+                <button class="fw-bold rounded btn btn-primary fs-5 px-5 py-3 nextBtn js-nextBtn">Next Question</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mainStartQuiz js-mainStartQuiz">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="px-5 py-3 fw-bold rounded btn btn-primary fs-5 startQuiz js-startQuiz">Start Quiz<i class="ms-2 fas fa-gamepad"></i></button>
+            </div>
         </div>
     </div>
   

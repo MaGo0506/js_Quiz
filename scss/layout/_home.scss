@@ -1,0 +1,60 @@
+.mainStartQuiz {
+    height: 80vh;
+    width: 100vw;
+}
+
+.oneAnswerQuestions {
+    display: none;
+
+    &.active {
+        display: block;
+    }
+
+    .questionContainer {
+        background: $primary;
+
+        &.correct {
+            background: $success;
+        }
+
+        &.wrong {
+            background: $danger;
+        }
+    
+        input {
+            border: 5px solid transparent;
+            transition: 0.3s;
+            
+            &:hover {
+                border: 5px solid #fff;
+            }
+        }
+    }
+}
+
+.confirmBtnHolder {
+    display: none;
+
+    &.active {
+        display: flex;
+        justify-content: center;
+    }
+
+    .nextBtn {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+}
+
+.mainStartQuiz {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    &.hidden {
+        display: none;
+    }
+}
