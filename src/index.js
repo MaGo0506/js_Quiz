@@ -30,25 +30,49 @@ pageLoader();
     confirmBtn = document.querySelector('.js-confirmBtn'),
     quiz = new Quiz(questions);
 
+  /**
+   * We are formating the text entered so it matches the answer
+   * @param {*} string - The string we want to adjust
+   */
   function formatString(string) {
     return string
       .replace(/(\B)[^ ]*/g, (match) => (match.toLowerCase()))
       .replace(/^[^ ]/g, (match) => (match.toUpperCase()));
   }
 
-  document.body.addEventListener('click', (e) => {
-    const targetBlock = e.target;
-    function run() {
-      if (!quiz.end()) {
-        const currentQuestion = quiz.getQuestions();
-        const quesOptions = quiz.getOptions();
+  /**
+   * Here we are creating out result elements
+   * and appending them to pass or fail parent
+   */
+  function quizResults() {
+    const quizPass = document.createElement('h1');
+    const quizFail = document.createElement('h1');
+    if (quiz) {
+      quiz.passContainer.appendChild(quizPass);
+      quiz.failContainer.appendChild(quizFail);
+    }
+    if (confirmBtnHolder && inputQuestions) {
+      confirmBtnHolder.classList.remove('active');
+      inputQuestions.classList.remove('active');
+    }
+    quiz.userScore(quizPass, quizFail);
+  }
 
-        if (currentQuestion.inputQuestion === false) {
-          if (question && category) {
-            question.innerHTML = currentQuestion.text;
-            category.innerHTML = `Category: ${currentQuestion.category}`;
-          }
+  /**
+   * We are running the quiz and updating if is a
+   * radioBtn question, checkBox question or input question,
+   */
+  function runQuiz() {
+    if (!quiz.end()) {
+      const currentQuestion = quiz.getQuestions();
+      const quesOptions = quiz.getOptions();
 
+      if (!currentQuestion.inputQuestion) {
+        if (question && category) {
+          question.innerHTML = currentQuestion.text;
+          category.innerHTML = `Category: ${currentQuestion.category}`;
+        }
+        if (quesOptions) {
           for (let index = 0; index < quesOptions.length; index += 1) {
             if (questionText && radioBtns) {
               questionText[index].innerHTML = quesOptions[index].option;
@@ -56,50 +80,156 @@ pageLoader();
               radioBtns[index].setAttribute('correct', quesOptions[index].correct);
             }
           }
-          if (currentQuestion.isCheckInput === true) {
-            if (oneAnswerQuestions && multiAnsQuestion) {
-              oneAnswerQuestions.classList.remove('active');
-              multiAnsQuestion.classList.add('active');
-            }
-            if (multiQuestion) {
-              multiQuestion.innerHTML = `${currentQuestion.text} *select two answers`;
-              multiCategory.innerHTML = `Category: ${currentQuestion.category}`;
-            }
+        }
+        if (currentQuestion.isCheckInput) {
+          if (oneAnswerQuestions && multiAnsQuestion) {
+            oneAnswerQuestions.classList.remove('active');
+            multiAnsQuestion.classList.add('active');
+          }
+          if (multiQuestion) {
+            multiQuestion.innerHTML = `${currentQuestion.text} *select two answers`;
+            multiCategory.innerHTML = `Category: ${currentQuestion.category}`;
+          }
+          if (multiOption && checkBox) {
             for (let i = 0; i < multiOption.length; i += 1) {
-              if (multiOption && checkBox) {
-                multiOption[i].innerHTML = quesOptions[i].option;
-                checkBox[i].setAttribute('value', multiOption[i].innerHTML);
-                checkBox[i].setAttribute('correct', quesOptions[i].correct);
-              }
+              multiOption[i].innerHTML = quesOptions[i].option;
+              checkBox[i].setAttribute('value', multiOption[i].innerHTML);
+              checkBox[i].setAttribute('correct', quesOptions[i].correct);
             }
           }
-        } else if (currentQuestion.inputQuestion === true) {
-          if (multiAnsQuestion && inputQuestion) {
-            multiAnsQuestion.classList.remove('active');
-            inputQuestions.classList.add('active');
-            inputQuestion.innerHTML = currentQuestion.text;
+        }
+      } else if (currentQuestion.inputQuestion) {
+        if (multiAnsQuestion && inputQuestion) {
+          multiAnsQuestion.classList.remove('active');
+          inputQuestions.classList.add('active');
+          inputQuestion.innerHTML = currentQuestion.text;
+        }
+        if (inputCategory && answerInput) {
+          inputCategory.innerHTML = `Category: ${currentQuestion.category}`;
+          answerInput.setAttribute('data', currentQuestion.answer);
+        }
+      }
+    } else {
+      quizResults();
+    }
+  }
+
+  /**
+   * When clicked confirm to check if our selected answer is correct
+   * @param {*} current - the current question properties
+   */
+  function confirmRadio(current) {
+    if (!current.isCheckInput && !current.inputQuestion) {
+      if (oneAnswerQuestions && multiAnsQuestion) {
+        oneAnswerQuestions.classList.add('slideUp');
+        multiAnsQuestion.classList.add('slideUpBottom');
+      }
+      if (quiz && radioBtns) {
+        quiz.questionAnimation(multiAnsQuestion);
+        radioBtns.forEach((radioBtn) => {
+          if (radioBtn.checked === true) {
+            quiz.disableBtns(radioBtns);
+            quiz.userAnswer(radioBtn.getAttribute('correct'), radioBtn.parentNode);
           }
-          if (inputCategory && answerInput) {
-            inputCategory.innerHTML = `Category: ${currentQuestion.category}`;
-            answerInput.setAttribute('data', currentQuestion.answer);
-          }
-        }
-      } else {
-        const quizPass = document.createElement('h1');
-        const quizFail = document.createElement('h1');
-        if (quiz) {
-          quiz.passContainer.appendChild(quizPass);
-          quiz.failContainer.appendChild(quizFail);
-        }
-        if (confirmBtnHolder && inputQuestions) {
-          confirmBtnHolder.classList.remove('active');
-          inputQuestions.classList.remove('active');
-        }
-        quiz.userScore(quizPass, quizFail);
+        });
       }
     }
-    if (e.target.classList.contains('js-confirmBtn')) {
-      const currentQuestion = quiz.getQuestions();
+  }
+
+  /**
+   * When clicked confirm to check if our selected answers are correct
+   * @param {*} current - the current question properties
+   */
+  function confirmCheckBox(current) {
+    if (current.isCheckInput && !current.inputQuestion) {
+      if (multiAnsQuestion && inputQuestions) {
+        multiAnsQuestion.classList.add('slideUp');
+        inputQuestions.classList.add('slideUpBottom');
+      }
+      if (quiz && checkBox) {
+        quiz.questionAnimation(inputQuestions);
+        checkBox.forEach((box) => {
+          if (box.checked === true) {
+            quiz.disableBtns(checkBox);
+            quiz.userAnswer(box.getAttribute('correct'), box.parentNode);
+          }
+        });
+      }
+    }
+  }
+
+  /**
+   * When clicked confirm to check if our input matches the answer
+   * @param {*} current - the current question properties
+   */
+  function confirmInput(current) {
+    if (current.inputQuestion) {
+      if (inputQuestion && answerInput) {
+        inputQuestions.classList.add('slideUp');
+        answerInput.setAttribute('disabled', true);
+        quiz.checkInputAnswer(formatString(answerInput.value), answerInput.parentNode);
+      }
+    }
+  }
+
+  /**
+   * When clicked next question it changes to the next one
+   * @param {*} current - the current question properties
+   */
+  function nextRadioQuestion(current) {
+    if (!current.isCheckInput && !current.inputQuestion) {
+      if (quiz && radioBtns) {
+        quiz.questionAnimation(oneAnswerQuestions);
+        for (let index = 0; index < radioBtns.length; index += 1) {
+          quiz.nextQuestion(radioBtns[index]);
+          radioBtns[index].checked = false;
+          quiz.enableBtns(radioBtns);
+        }
+      }
+    }
+  }
+
+  /**
+   * When clicked next question it changes to the next one
+   * @param {*} current - the current question properties
+   */
+  function nextCheckBox(current) {
+    if (current.isCheckInput && !current.inputQuestion) {
+      if (quiz && checkBox) {
+        quiz.questionAnimation(multiAnsQuestion);
+        for (let i = 0; i < checkBox.length; i += 1) {
+          quiz.nextQuestion(checkBox[i]);
+          checkBox[i].checked = false;
+          quiz.enableBtns(checkBox);
+        }
+      }
+    }
+  }
+
+  /**
+   * When clicked next question it changes to the next one
+   * @param {*} current - the current question properties
+   */
+  function nextInputQuestion(current) {
+    if (current.inputQuestion) {
+      if (quiz && answerInput) {
+        quiz.questionAnimation(inputQuestions);
+        answerInput.removeAttribute('disabled');
+        quiz.nextQuestion(answerInput);
+        answerInput.value = '';
+      }
+    }
+  }
+
+  /**
+   * Making our doucument clickable
+   * and adjusting confirm button and next button
+   * for the animations
+   */
+  document.body.addEventListener('click', (e) => {
+    const targetBlock = e.target;
+    const currentQuestion = quiz.getQuestions();
+    if (targetBlock.classList.contains('js-confirmBtn')) {
       setTimeout(() => {
         if (nextBtn) {
           nextBtn.classList.add('active');
@@ -108,45 +238,12 @@ pageLoader();
       if (confirmBtn) {
         confirmBtn.classList.remove('active');
       }
-      if (currentQuestion.isCheckInput === false && currentQuestion.inputQuestion === false) {
-        if (oneAnswerQuestions && multiAnsQuestion) {
-          oneAnswerQuestions.classList.add('slideUp');
-          multiAnsQuestion.classList.add('slideUpBottom');
-        }
-        if (quiz && radioBtns) {
-          quiz.questionAnimation(multiAnsQuestion);
-          radioBtns.forEach((radioBtn) => {
-            if (radioBtn.checked === true) {
-              quiz.disableBtns(radioBtns);
-              quiz.userAnswer(radioBtn.getAttribute('correct'), radioBtn.parentNode);
-            }
-          });
-        }
-      } else if (currentQuestion.isCheckInput === true && currentQuestion.inputQuestion === false) {
-        if (multiAnsQuestion && inputQuestions) {
-          multiAnsQuestion.classList.add('slideUp');
-          inputQuestions.classList.add('slideUpBottom');
-        }
-        if (quiz && checkBox) {
-          quiz.questionAnimation(inputQuestions);
-          checkBox.forEach((box) => {
-            if (box.checked === true) {
-              quiz.disableBtns(checkBox);
-              quiz.userAnswer(box.getAttribute('correct'), box.parentNode);
-            }
-          });
-        }
-      } else if (currentQuestion.inputQuestion === true) {
-        if (inputQuestion && answerInput) {
-          inputQuestions.classList.add('slideUp');
-          answerInput.setAttribute('disabled', true);
-          quiz.checkInputAnswer(formatString(answerInput.value), answerInput.parentNode);
-        }
-      }
+      confirmRadio(currentQuestion);
+      confirmCheckBox(currentQuestion);
+      confirmInput(currentQuestion);
     }
 
     if (targetBlock === nextBtn) {
-      const currentQuestion = quiz.getQuestions();
       if (nextBtn && confirmBtn) {
         nextBtn.classList.remove('active');
         confirmBtn.classList.remove('active');
@@ -154,38 +251,19 @@ pageLoader();
           confirmBtn.classList.add('active');
         }, 2000);
       }
-      if (currentQuestion.isCheckInput === false && currentQuestion.inputQuestion === false) {
-        if (quiz && radioBtns) {
-          quiz.questionAnimation(oneAnswerQuestions);
-          for (let index = 0; index < radioBtns.length; index += 1) {
-            quiz.nextQuestion(radioBtns[index]);
-            radioBtns[index].checked = false;
-            quiz.enableBtns(radioBtns);
-          }
-        }
-      } else if (currentQuestion.isCheckInput === true && currentQuestion.inputQuestion === false) {
-        if (quiz && checkBox) {
-          quiz.questionAnimation(multiAnsQuestion);
-          for (let i = 0; i < checkBox.length; i += 1) {
-            quiz.nextQuestion(checkBox[i]);
-            checkBox[i].checked = false;
-            quiz.enableBtns(checkBox);
-          }
-        }
-      } else if (currentQuestion.inputQuestion === true) {
-        if (quiz && answerInput) {
-          quiz.questionAnimation(inputQuestions);
-          answerInput.removeAttribute('disabled');
-          quiz.nextQuestion(answerInput);
-          answerInput.value = '';
-        }
-        quiz.index += 1;
-      }
-      run();
+      nextRadioQuestion(currentQuestion);
+      nextCheckBox(currentQuestion);
+      nextInputQuestion(currentQuestion);
+      quiz.index += 1;
+      runQuiz();
     }
 
+    /**
+    * When start quiz clicked hide certain elements
+    * and display questions
+    */
     if (targetBlock.classList.contains('js-startQuiz')) {
-      run();
+      runQuiz();
       if (radioBtns && quiz) {
         radioBtns.forEach((radioBtn) => {
           quiz.nextQuestion(radioBtn);
