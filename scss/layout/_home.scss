@@ -1,3 +1,11 @@
+.mainHeader {
+    display: block;
+
+    &.hidden {
+        display: none;
+    }
+}
+
 .mainStartQuiz {
     height: 80vh;
     width: 100vw;
@@ -8,6 +16,41 @@
 
     &.active {
         display: block;
+        height: 100%;
+    }
+
+    &.slideUp {
+        animation: slideUp 4s ease-in-out forwards 1s;
+    }
+
+    @keyframes slideUp {
+        0% {
+            transform: translateY(0); 
+        }
+
+        50% {
+            transform: translateY(-110%);
+        }
+
+        100% {
+            transform: translateY(-110%);
+            opacity: 0;
+        }
+    }
+
+    &.slideUpBottom {
+        animation: slideUpBottom 2s ease-in-out forwards;
+    }
+
+    @keyframes slideUpBottom {
+        0% {
+            transform: translateY(220%);
+            opacity: 10;
+        }
+
+        100% {
+            transform: translateY(0);
+        }
     }
 
     .questionContainer {
@@ -30,6 +73,15 @@
             }
         }
     }
+
+    .answerText {
+
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
 }
 
 .confirmBtnHolder {
@@ -40,7 +92,187 @@
         justify-content: center;
     }
 
+    .confirmBtn {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+
     .nextBtn {
+        display: none;
+
+        &.active {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
+.multiAnsQuestion {
+    display: none;
+
+    &.active {
+        display: block;
+    }
+
+    &.slideUp {
+        animation: slideUp 4s ease-in-out forwards 1s;
+    }
+
+    @keyframes slideUp {
+        0% {
+            transform: translateY(0); 
+        }
+
+        50% {
+            transform: translateY(-110%);
+        }
+
+        100% {
+            transform: translateY(-110%);
+            opacity: 0;
+        }
+    }
+
+    &.slideUpBottom {
+        animation: slideUpBottom 2s ease-in-out forwards;
+    }
+
+    @keyframes slideUpBottom {
+        0% {
+            transform: translateY(220%);
+            opacity: 10;
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    .questionContainer {
+        background: $primary;
+
+        &.correct {
+            background: $success;
+        }
+
+        &.wrong {
+            background: $danger;
+        }
+    
+        input {
+            border: 5px solid transparent;
+            transition: 0.3s;
+            
+            &:hover {
+                border: 5px solid #fff;
+            }
+        }
+    }
+
+    .multiQuestionContainer {
+        background: $primary;
+
+        &.correct {
+            background: $success;
+        }
+
+        &.wrong {
+            background: $danger;
+        }
+    }
+
+    .multiAnswerText {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+}
+
+.inputQuestions {
+    display: none;
+
+    &.active {
+        display: block;
+    }
+
+    &.slideUp {
+        animation: slideUp 4s ease-in-out forwards 1s;
+    }
+
+    @keyframes slideUp {
+        0% {
+            transform: translateY(0); 
+        }
+
+        50% {
+            transform: translateY(-110%);
+        }
+
+        100% {
+            transform: translateY(-110%);
+            opacity: 0;
+        }
+    }
+
+    &.slideUpBottom {
+        animation: slideUpBottom 2s ease-in-out forwards;
+    }
+
+    @keyframes slideUpBottom {
+        0% {
+            transform: translateY(500%);
+            opacity: 10;
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    .questionContainer {
+        background: $primary;
+
+        &.correct {
+            background: $success;
+        }
+
+        &.wrong {
+            background: $danger;
+        }
+    
+        input {
+            border: 5px solid transparent;
+            transition: 0.3s;
+            
+            &:hover {
+                border: 5px solid #fff;
+            }
+        }
+    }
+
+    .inputQuestionContainer {
+        background: $primary;
+        padding: 10px 0;
+
+        &.correct {
+            background: $success;
+        }
+
+        &.wrong {
+            background: $danger;
+        }
+    }
+
+    .answerInput {
+        text-align: center;
+    }
+
+    .inputAnswerText {
         display: none;
 
         &.active {
@@ -56,5 +288,45 @@
     
     &.hidden {
         display: none;
+    }
+}
+
+.mainResult {
+    display: none;
+
+    &.active {
+        margin-top: 300px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    .passContainer {
+        color: $success;
+        display: none;
+        
+        &.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+           font-weight: bold;
+        }
+    }
+
+    .failContainer {
+        color: $danger;
+        display: none;
+
+        &.active {
+            display: block;
+        }
+
+        h1 {
+            font-weight: bold;
+        }
     }
 }

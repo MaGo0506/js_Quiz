@@ -12,13 +12,21 @@
         <img src="./images/loader.gif" alt="Loading...">
     </div>
 
-    <div class="container">
+    <div class="container mainHeader js-mainHeader">
         <div class="row text-center">
             <h1 class="py-5">Welcome to my Quiz</h1>
+            <p class="fs-4">You will need 75 points to pass</p>
         </div>
     </div>
 
-    <div class="container oneAnswerQuestions js-oneAnswerQuestions mt-5">
+    <div class="container mainResult js-mainResult">
+        <div class="row">
+            <div class="col-md-12 passContainer js-passContainer"></div>
+            <div class="col-md-12 failContainer js-failContainer"></div>
+        </div>
+    </div>
+
+    <div class="container pt-5 oneAnswerQuestions js-oneAnswerQuestions mt-5">
         <div class="row">
             <div class="col-9">
                 <h3 class="question js-question">What is the answer</h3>
@@ -46,13 +54,69 @@
                 <input class="form-check-input bg-dark me-3 js-radioBtn" type="radio" name="choice" id="choice4">
                 <label for="choice1" class="questionText js-questionText">Question</label>
             </div>
+            <p class='mt-3 fs-5 fw-bold text-primary answerText js-answerText'>Answer</p>
+        </div>
+    </div>
+
+    <div class="container pt-5 multiAnsQuestion js-multiAnsQuestion">
+        <div class="row">
+            <div class="col-9">
+                <h3 class="question js-multiQuestion">What is the answer</h3>
+            </div>
+            <div class="col-3">
+                <h3 class="category js-multiCategory">What is the category</h3>
+            </div>
+            <div class="form-check col-12 mt-3 pt-3 d-flex fs-5 rounded multiQuestionContainer js-multiQuestionContainer">
+                <p class="questionPrefix js-questionPrefix pe-5">A.</p>
+                <input class="me-2 form-check-input js-checkBox" type="checkbox" id="flexCheckDefault1">
+                <label class="form-check-label js-multiOption" for="flexCheckDefault1">
+                  Question
+                </label>
+              </div>
+              <div class="form-check col-12 mt-3 pt-3 d-flex fs-5 rounded multiQuestionContainer js-multiQuestionContainer">
+                <p class="questionPrefix js-questionPrefix pe-5">B.</p>
+                <input class="me-2 form-check-input js-checkBox" type="checkbox" id="flexCheckDefault2">
+                <label class="form-check-label js-multiOption" for="flexCheckDefault2">
+                  Question
+                </label>
+              </div>
+            <div class="form-check col-12 mt-3 pt-3 d-flex fs-5 rounded multiQuestionContainer js-multiQuestionContainer">
+                <p class="questionPrefix js-questionPrefix pe-5">C.</p>
+                <input class="me-2 form-check-input js-checkBox" type="checkbox" id="flexCheckDefault3">
+                <label class="form-check-label js-multiOption" for="flexCheckDefault3">
+                  Question
+                </label>
+              </div>
+              <div class="form-check col-12 mt-3 pt-3 d-flex fs-5 rounded multiQuestionContainer js-multiQuestionContainer">
+                <p class="questionPrefix js-questionPrefix pe-5">D.</p>
+                <input class="me-2 form-check-input js-checkBox" type="checkbox" id="flexCheckDefault4">
+                <label class="form-check-label js-multiOption" for="flexCheckDefault4">
+                  Question
+                </label>
+              </div>
+              <p class='mt-3 fs-5 fw-bold text-primary multiAnswerText js-multiAnswerText'>Answer</p>
+        </div>
+    </div>
+
+    <div class="container pt-5 inputQuestions js-inputQuestions">
+        <div class="row">
+            <div class="col-9">
+                <h3 class="question js-inputQuestion">What is the answer</h3>
+            </div>
+            <div class="col-3">
+                <h3 class="category js-inputCategory">What is the category</h3>
+            </div>
+            <div class="inputQuestionContainer js-inputQuestionContainer rounded d-flex justify-content-center">
+                <input class="rounded fs-5 w-50 py-2 answerInput js-answerInput">
+            </div>
+            <pmt-3 class='fs-5 fw-bold text-primary inputAnswerText js-inputAnswerText'>Answer</p>
         </div>
     </div>
 
     <div class="container py-3 confirmBtnHolder js-confirmBtnHolder">
         <div class="row">
             <div class="col-6">
-                <button class="fw-bold rounded btn btn-primary fs-5 px-5 py-3 mx-5 js-confirmBtn">Confirm</button>
+                <button class="fw-bold rounded btn btn-primary fs-5 px-5 py-3 mx-5 confirmBtn js-confirmBtn">Confirm</button>
             </div>
             <div class="col-6">
                 <button class="fw-bold rounded btn btn-primary fs-5 px-5 py-3 nextBtn js-nextBtn">Next Question</button>
